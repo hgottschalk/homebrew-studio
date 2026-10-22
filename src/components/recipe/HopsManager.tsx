@@ -10,6 +10,8 @@ import {
   tempFToDisplay,
   displayToTempF,
 } from '@/lib/units';
+import { ModalDialog } from '@/components/ui/ModalDialog';
+import { RovingFilterGroup } from '@/components/ui/RovingFilterGroup';
 import {
   Hop,
   Plus,
@@ -124,20 +126,29 @@ export function HopsManager({ metrics }: HopsManagerProps) {
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5">
+    <section
+      aria-labelledby="hops-section-heading"
+      className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5"
+    >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-[#10B981]/15 text-[#10B981]">
+          <div
+            className="p-2 rounded-xl bg-[#10B981]/15 text-[#10B981]"
+            aria-hidden="true"
+          >
             <Hop className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">
-              Hop Schedule & Utilization ({allHops.length} Varieties in DB •{' '}
+            <h2
+              id="hops-section-heading"
+              className="text-lg font-semibold text-white"
+            >
+              Hop Schedule &amp; Utilization ({allHops.length} Varieties in DB •{' '}
               {recipe.equipment.ibuFormula.toUpperCase()})
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Total Hops:{' '}
-              <span className="text-slate-200 font-medium">
+              <span className="text-white font-medium">
                 {ozToDisplay(metrics.totalHopsOz, unitSystem)}{' '}
                 {unitSystem === 'metric' ? 'g' : 'oz'}
               </span>{' '}
@@ -151,145 +162,68 @@ export function HopsManager({ metrics }: HopsManagerProps) {
 
         <button
           type="button"
-          onClick={() => setShowCustomModal(!showCustomModal)}
-          className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer"
+          onClick={() => setShowCustomModal(true)}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition-colors cursor-pointer"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#10B981]" />
-          + Add Custom Hop to DB
+          <Sparkles className="w-3.5 h-3.5 text-[#10B981]" aria-hidden="true" />
+          <span>+ Add Custom Hop to DB</span>
         </button>
       </div>
 
-      {/* Custom Hop Creator Modal */}
-      {showCustomModal && (
-        <form
-          onSubmit={handleCreateCustomHop}
-          className="bg-slate-950/95 border border-[#10B981]/40 rounded-xl p-4 space-y-3"
-        >
-          <div className="text-xs font-semibold uppercase tracking-wider text-[#10B981]">
-            Add New Hop Variety to Local Database
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-6 gap-3 items-end">
-            <div className="sm:col-span-2">
-              <label className="block text-xs text-slate-400 mb-1">
-                Hop Variety Name
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="e.g., Superdelic or Anchovy"
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Origin Country
-              </label>
-              <input
-                type="text"
-                placeholder="United States, NZ..."
-                value={customOrigin}
-                onChange={(e) => setCustomOrigin(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Alpha Acid %
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={customAlpha}
-                onChange={(e) => setCustomAlpha(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Aroma Tags (comma-sep)
-              </label>
-              <input
-                type="text"
-                value={customTags}
-                onChange={(e) => setCustomTags(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-white"
-              />
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs py-2 px-3 rounded-lg transition-colors cursor-pointer"
-              >
-                Save to DB & Add
-              </button>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1">
-              Flavor Notes (optional)
-            </label>
-            <input
-              type="text"
-              placeholder="e.g., Red berry, candy, and ripe mango aroma..."
-              value={customNotes}
-              onChange={(e) => setCustomNotes(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
-            />
-          </div>
-        </form>
-      )}
-
-      {/* Origin Filter Pills, Search & Add Hop Bar */}
+      {/* Origin Filter Radiogroup, Search & Add Hop Bar */}
       <div className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div className="flex flex-wrap gap-1.5">
-            {origins.map((origin) => (
-              <button
-                key={origin}
-                type="button"
-                onClick={() => {
-                  setSelectedOrigin(origin);
-                  const first = allHops.find(
-                    (h) => origin === 'All Origins' || h.origin === origin
-                  );
-                  if (first) setSelectedHopId(first.id);
-                }}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${
-                  selectedOrigin === origin
-                    ? 'bg-[#10B981] text-slate-950 font-semibold shadow-sm'
-                    : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-                }`}
-              >
-                {origin}
-              </button>
-            ))}
-          </div>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <RovingFilterGroup
+            ariaLabel="Filter Hop Varieties by Country of Origin"
+            options={origins.map((origin) => ({
+              value: origin,
+              label: origin,
+            }))}
+            value={selectedOrigin}
+            onChange={(origin) => {
+              setSelectedOrigin(origin);
+              const first = allHops.find(
+                (h) => origin === 'All Origins' || h.origin === origin
+              );
+              if (first) setSelectedHopId(first.id);
+            }}
+            accentColor="emerald"
+          />
 
-          <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search Galaxy, Amarillo, Noble, Pine..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#10B981]"
-            />
-          </div>
+          <search aria-label="Search Hop Varieties" className="w-full lg:w-64">
+            <label htmlFor="hop-search-input" className="visually-hidden">
+              Search hop varieties by name, origin, or aroma
+            </label>
+            <div className="relative">
+              <Search
+                className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"
+                aria-hidden="true"
+              />
+              <input
+                id="hop-search-input"
+                type="search"
+                placeholder="Search Galaxy, Amarillo, Noble, Pine..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white"
+              />
+            </div>
+          </search>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
           <div className="sm:col-span-5">
+            <label
+              htmlFor="add-hop-variety-select"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
+              Hop Variety
+            </label>
             <select
+              id="add-hop-variety-select"
               value={selectedCatalogHop?.id || ''}
               onChange={(e) => setSelectedHopId(e.target.value)}
-              aria-label="Select Hop Variety"
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#10B981]"
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
             >
               {filteredHops.map((h) => (
                 <option key={h.id} value={h.id}>
@@ -301,7 +235,14 @@ export function HopsManager({ metrics }: HopsManagerProps) {
           </div>
 
           <div className="sm:col-span-3">
+            <label
+              htmlFor="add-hop-stage-select"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
+              Addition Stage
+            </label>
             <select
+              id="add-hop-stage-select"
               value={selectedUse}
               onChange={(e) => {
                 const nextUse = e.target.value as HopUse;
@@ -311,8 +252,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                 else if (nextUse === 'first-wort')
                   setAddTime(String(recipe.equipment.boilTimeMinutes));
               }}
-              aria-label="Select Hop Addition Stage"
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#10B981]"
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
             >
               {HOP_USE_OPTIONS.map((u) => (
                 <option key={u.value} value={u.value}>
@@ -322,48 +262,61 @@ export function HopsManager({ metrics }: HopsManagerProps) {
             </select>
           </div>
 
-          <div className="sm:col-span-2 relative">
-            <input
-              type="number"
-              step="0.25"
-              min="0.1"
-              value={addWeightDisplay}
-              onChange={(e) => setAddWeightDisplay(e.target.value)}
-              aria-label="Hop Weight"
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-3 pr-8 py-2 text-sm text-white"
-            />
-            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-              {unitSystem === 'metric' ? 'g' : 'oz'}
-            </span>
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="add-hop-weight-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
+              Weight ({unitSystem === 'metric' ? 'g' : 'oz'})
+            </label>
+            <div className="relative">
+              <input
+                id="add-hop-weight-input"
+                type="number"
+                step="0.25"
+                min="0.1"
+                value={addWeightDisplay}
+                onChange={(e) => setAddWeightDisplay(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-3 pr-8 py-2 text-sm text-white"
+              />
+              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-300">
+                {unitSystem === 'metric' ? 'g' : 'oz'}
+              </span>
+            </div>
           </div>
 
-          <div className="sm:col-span-2 flex gap-2">
-            <div className="relative flex-1">
+          <div className="sm:col-span-2 flex items-end gap-2">
+            <div className="flex-1">
+              <label
+                htmlFor="add-hop-time-input"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                {selectedUse === 'dry-hop' ? 'Days' : 'Minutes'}
+              </label>
               <input
+                id="add-hop-time-input"
                 type="number"
                 min="0"
                 value={addTime}
                 onChange={(e) => setAddTime(e.target.value)}
-                aria-label="Hop Time"
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-2.5 pr-8 py-2 text-sm text-white"
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white"
               />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-slate-400">
-                {selectedUse === 'dry-hop' ? 'days' : 'min'}
-              </span>
             </div>
             <button
               type="button"
               onClick={handleAddHop}
-              className="inline-flex items-center justify-center bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold px-3 py-2 rounded-lg transition-colors cursor-pointer"
-              title="Add Hop Addition"
+              aria-label="Add Hop Addition to Recipe"
+              className="inline-flex items-center justify-center gap-1 bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer shrink-0"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4" aria-hidden="true" />
+              <span>Add</span>
             </button>
           </div>
         </div>
+
         {selectedCatalogHop && (
-          <p className="text-xs text-slate-400 pl-1">
-            <span className="text-slate-300 font-medium">
+          <p className="text-xs text-slate-300 pl-1">
+            <span className="text-white font-medium">
               {selectedCatalogHop.name} ({selectedCatalogHop.origin}):
             </span>{' '}
             {selectedCatalogHop.notes}
@@ -371,7 +324,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
               <>
                 {' '}
                 Substitutes:{' '}
-                <span className="text-slate-300">
+                <span className="text-slate-200">
                   {selectedCatalogHop.substitutes.join(', ')}
                 </span>
               </>
@@ -380,21 +333,43 @@ export function HopsManager({ metrics }: HopsManagerProps) {
         )}
       </div>
 
-      {/* Hop Additions Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+      {/* Container-Query Responsive Hop Additions Table */}
+      <div
+        tabIndex={0}
+        role="region"
+        aria-labelledby="hops-table-caption"
+        className="responsive-table-container"
+      >
+        <table className="adaptive-table text-left">
+          <caption id="hops-table-caption" className="visually-hidden">
+            Active Recipe Hop Additions Schedule and IBU Contributions
+          </caption>
           <thead>
-            <tr className="border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400">
-              <th className="py-2.5 px-3">Hop Variety & Aroma</th>
-              <th className="py-2.5 px-3">Stage & Form</th>
-              <th className="py-2.5 px-3">
+            <tr className="border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-300">
+              <th scope="col" className="py-2.5 px-3">
+                Hop Variety &amp; Aroma
+              </th>
+              <th scope="col" className="py-2.5 px-3">
+                Stage &amp; Form
+              </th>
+              <th scope="col" className="py-2.5 px-3">
                 Amount ({unitSystem === 'metric' ? 'g' : 'oz'})
               </th>
-              <th className="py-2.5 px-3">Alpha Acid %</th>
-              <th className="py-2.5 px-3">Time & Whirlpool Temp</th>
-              <th className="py-2.5 px-3">IBU</th>
-              <th className="py-2.5 px-3">Stock</th>
-              <th className="py-2.5 px-2 text-right">Remove</th>
+              <th scope="col" className="py-2.5 px-3">
+                Alpha Acid %
+              </th>
+              <th scope="col" className="py-2.5 px-3">
+                Time &amp; Whirlpool Temp
+              </th>
+              <th scope="col" className="py-2.5 px-3">
+                IBU
+              </th>
+              <th scope="col" className="py-2.5 px-3">
+                Stock
+              </th>
+              <th scope="col" className="py-2.5 px-2 text-right">
+                Remove
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60 text-sm">
@@ -415,7 +390,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                   key={hop.instanceId}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
-                  <td className="py-3 px-3">
+                  <td data-label="Hop Variety" className="py-3 px-3">
                     <div className="font-medium text-white">{hop.name}</div>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {(hop.flavorTags || []).map((tag) => (
@@ -429,7 +404,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                     </div>
                   </td>
 
-                  <td className="py-3 px-3 space-y-1.5">
+                  <td data-label="Stage & Form" className="py-3 px-3 space-y-1.5">
                     <select
                       value={hop.use}
                       onChange={(e) =>
@@ -441,8 +416,8 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                               : undefined,
                         })
                       }
-                      aria-label={`Stage for ${hop.name}`}
-                      className="block w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-200"
+                      aria-label={`Addition stage for ${hop.name}`}
+                      className="block w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-100"
                     >
                       {HOP_USE_OPTIONS.map((u) => (
                         <option key={u.value} value={u.value}>
@@ -457,8 +432,8 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                           form: e.target.value as HopForm,
                         })
                       }
-                      aria-label={`Form for ${hop.name}`}
-                      className="block w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-400"
+                      aria-label={`Hop form for ${hop.name}`}
+                      className="block w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-300"
                     >
                       <option value="pellet">Pellet (+10% Util)</option>
                       <option value="whole">Whole Leaf</option>
@@ -466,7 +441,10 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                     </select>
                   </td>
 
-                  <td className="py-3 px-3">
+                  <td
+                    data-label={`Amount (${unitSystem === 'metric' ? 'g' : 'oz'})`}
+                    className="py-3 px-3"
+                  >
                     <input
                       type="number"
                       step="0.25"
@@ -485,7 +463,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                     />
                   </td>
 
-                  <td className="py-3 px-3">
+                  <td data-label="Alpha Acid %" className="py-3 px-3">
                     <div className="relative w-20">
                       <input
                         type="number"
@@ -498,16 +476,16 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                             alphaAcid: parseFloat(e.target.value) || 0,
                           })
                         }
-                        aria-label={`Alpha acid for ${hop.name}`}
+                        aria-label={`Alpha acid percentage for ${hop.name}`}
                         className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-2 pr-5 py-1.5 text-sm text-white"
                       />
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-slate-300">
                         %
                       </span>
                     </div>
                   </td>
 
-                  <td className="py-3 px-3">
+                  <td data-label="Time & Temp" className="py-3 px-3">
                     <div className="flex items-center gap-2">
                       <div className="relative w-20">
                         <input
@@ -519,17 +497,22 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                               timeMinutes: parseFloat(e.target.value) || 0,
                             })
                           }
-                          aria-label={`Time for ${hop.name}`}
+                          aria-label={`Duration in ${
+                            hop.use === 'dry-hop' ? 'days' : 'minutes'
+                          } for ${hop.name}`}
                           className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-2 pr-8 py-1.5 text-sm text-white"
                         />
-                        <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400">
+                        <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-300">
                           {hop.use === 'dry-hop' ? 'days' : 'min'}
                         </span>
                       </div>
 
                       {hop.use === 'whirlpool' && (
                         <div className="relative w-24 flex items-center">
-                          <Thermometer className="w-3.5 h-3.5 text-amber-400 absolute left-2 pointer-events-none" />
+                          <Thermometer
+                            className="w-3.5 h-3.5 text-amber-400 absolute left-2 pointer-events-none"
+                            aria-hidden="true"
+                          />
                           <input
                             type="number"
                             value={tempFToDisplay(
@@ -547,7 +530,7 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                             aria-label={`Whirlpool temperature for ${hop.name}`}
                             className="w-full bg-slate-950 border border-amber-500/40 rounded-lg pl-6 pr-6 py-1.5 text-xs text-amber-200"
                           />
-                          <span className="absolute right-1.5 text-[10px] text-amber-400">
+                          <span className="absolute right-1.5 text-[10px] text-amber-300">
                             °{unitSystem === 'metric' ? 'C' : 'F'}
                           </span>
                         </div>
@@ -555,22 +538,22 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                     </div>
                   </td>
 
-                  <td className="py-3 px-3">
+                  <td data-label="IBU Contribution" className="py-3 px-3">
                     <span className="font-semibold text-[#10B981]">
                       {ibuVal.toFixed(1)} IBU
                     </span>
                   </td>
 
-                  <td className="py-3 px-3">
+                  <td data-label="Stock" className="py-3 px-3">
                     {hasEnough ? (
-                      <span className="inline-flex items-center gap-1 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                        <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                         {ozToDisplay(onHandOz, unitSystem)}{' '}
                         {unitSystem === 'metric' ? 'g' : 'oz'}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
-                        <AlertCircle className="w-3.5 h-3.5" />
+                      <span className="inline-flex items-center gap-1 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
+                        <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />
                         {onHandOz > 0
                           ? `Have ${ozToDisplay(onHandOz, unitSystem)} ${unitSystem === 'metric' ? 'g' : 'oz'}`
                           : 'Out of Stock'}
@@ -578,14 +561,14 @@ export function HopsManager({ metrics }: HopsManagerProps) {
                     )}
                   </td>
 
-                  <td className="py-3 px-2 text-right">
+                  <td data-label="Action" className="py-3 px-2 text-right">
                     <button
                       type="button"
                       onClick={() => removeHop(hop.instanceId)}
-                      aria-label={`Remove ${hop.name}`}
-                      className="p-1.5 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
+                      aria-label={`Remove ${hop.name} addition`}
+                      className="p-2 text-slate-300 hover:text-rose-400 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </td>
                 </tr>
@@ -594,6 +577,138 @@ export function HopsManager({ metrics }: HopsManagerProps) {
           </tbody>
         </table>
       </div>
-    </div>
+
+      {/* Native <dialog> Modal for Adding Custom Hop Variety */}
+      <ModalDialog
+        open={showCustomModal}
+        onClose={() => setShowCustomModal(false)}
+        title="Add New Hop Variety to Local Database"
+        description="Save a custom hop cultivar with its alpha acid percentage and aroma profile."
+        icon={Hop}
+        maxWidthClass="max-w-xl"
+      >
+        <form onSubmit={handleCreateCustomHop} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label
+                htmlFor="custom-hop-name"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Hop Variety Name
+              </label>
+              <input
+                id="custom-hop-name"
+                type="text"
+                required
+                placeholder="e.g., Superdelic or Anchovy"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="custom-hop-origin"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Origin Country
+              </label>
+              <input
+                id="custom-hop-origin"
+                type="text"
+                placeholder="United States, New Zealand..."
+                value={customOrigin}
+                onChange={(e) => setCustomOrigin(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="custom-hop-alpha"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Alpha Acid (%)
+              </label>
+              <input
+                id="custom-hop-alpha"
+                type="number"
+                step="0.1"
+                value={customAlpha}
+                onChange={(e) => setCustomAlpha(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="custom-hop-beta"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Beta Acid (%)
+              </label>
+              <input
+                id="custom-hop-beta"
+                type="number"
+                step="0.1"
+                value={customBeta}
+                onChange={(e) => setCustomBeta(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="custom-hop-tags"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Aroma &amp; Flavor Tags (comma-separated)
+              </label>
+              <input
+                id="custom-hop-tags"
+                type="text"
+                value={customTags}
+                onChange={(e) => setCustomTags(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="custom-hop-notes"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Flavor Notes (optional)
+              </label>
+              <input
+                id="custom-hop-notes"
+                type="text"
+                placeholder="e.g., Red berry, candy, and ripe mango aroma..."
+                value={customNotes}
+                onChange={(e) => setCustomNotes(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => setShowCustomModal(false)}
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs py-2 px-4 rounded-lg transition-colors cursor-pointer"
+            >
+              Save to DB &amp; Add to Recipe
+            </button>
+          </div>
+        </form>
+      </ModalDialog>
+    </section>
   );
 }

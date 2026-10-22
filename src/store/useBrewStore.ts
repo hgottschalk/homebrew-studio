@@ -28,6 +28,19 @@ import { calculateBrewMetrics } from '@/lib/calculations';
 
 export type ActiveTab = 'recipe' | 'inventory' | 'water' | 'brewday' | 'ai';
 
+export interface BrewerySnapshot {
+  version: number;
+  exportedAt: string;
+  unitSystem: UnitSystem;
+  recipe: Recipe;
+  savedRecipes: Recipe[];
+  inventory: InventoryItem[];
+  batchLogs: BatchLog[];
+  customFermentables: FermentableCatalogItem[];
+  customHops: HopCatalogItem[];
+  customYeasts: YeastCatalogItem[];
+}
+
 interface BrewStoreState {
   activeTab: ActiveTab;
   unitSystem: UnitSystem;
@@ -123,6 +136,10 @@ interface BrewStoreState {
     batchId: string,
     reading: { dayNumber: number; gravity: number; tempF: number; notes: string }
   ) => void;
+
+  // Full Studio Snapshot & Cloud Sync
+  getBrewerySnapshot: () => BrewerySnapshot;
+  hydrateBrewerySnapshot: (snapshot: Partial<BrewerySnapshot>) => void;
 }
 
 export const useBrewStore = create<BrewStoreState>()(
@@ -138,7 +155,7 @@ export const useBrewStore = create<BrewStoreState>()(
           id: 'batch-demo-1',
           recipeId: INITIAL_RECIPE.id,
           recipeName: INITIAL_RECIPE.name,
-          brewDate: new Date().toISOString().split('T')[0],
+          brewDate: '2026-10-19',
           leadBrewer: 'Head Brewer',
           coBrewers: '',
           status: 'mashing',
@@ -190,7 +207,7 @@ export const useBrewStore = create<BrewStoreState>()(
           gravityReadings: [
             {
               id: 'grav-1',
-              date: new Date().toISOString().split('T')[0],
+              date: '2026-10-19',
               dayNumber: 0,
               gravity: 1.065,
               tempF: 68,
@@ -861,6 +878,46 @@ export const useBrewStore = create<BrewStoreState>()(
               ],
             };
           }),
+        })),
+
+      getBrewerySnapshot: () => {
+        const s = get();
+        return {
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          unitSystem: s.unitSystem,
+          recipe: s.recipe,
+          savedRecipes: s.savedRecipes,
+          inventory: s.inventory,
+          batchLogs: s.batchLogs,
+          customFermentables: s.customFermentables,
+          customHops: s.customHops,
+          customYeasts: s.customYeasts,
+        };
+      },
+
+      hydrateBrewerySnapshot: (snapshot) =>
+        set((state) => ({
+          unitSystem: snapshot.unitSystem ?? state.unitSystem,
+          recipe: snapshot.recipe ?? state.recipe,
+          savedRecipes: Array.isArray(snapshot.savedRecipes)
+            ? snapshot.savedRecipes
+            : state.savedRecipes,
+          inventory: Array.isArray(snapshot.inventory)
+            ? snapshot.inventory
+            : state.inventory,
+          batchLogs: Array.isArray(snapshot.batchLogs)
+            ? snapshot.batchLogs
+            : state.batchLogs,
+          customFermentables: Array.isArray(snapshot.customFermentables)
+            ? snapshot.customFermentables
+            : state.customFermentables,
+          customHops: Array.isArray(snapshot.customHops)
+            ? snapshot.customHops
+            : state.customHops,
+          customYeasts: Array.isArray(snapshot.customYeasts)
+            ? snapshot.customYeasts
+            : state.customYeasts,
         })),
     }),
     {

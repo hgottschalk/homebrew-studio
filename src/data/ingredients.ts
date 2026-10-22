@@ -1458,7 +1458,7 @@ export const INITIAL_RECIPE: Recipe = {
   method: 'all-grain',
   notes: 'Formulated with 2-Row and Maris Otter for a crisp biscuit backbone, finished with 1.25 lbs of Orange Blossom Honey at flameout and Citra/Mosaic whirlpool & dry hops.',
   formulatedAt: '2026-10-19',
-  updatedAt: new Date().toISOString(),
+  updatedAt: '2026-10-19T12:00:00.000Z',
   equipment: {
     batchVolumeGal: 5.5,
     boilTimeMinutes: 60,

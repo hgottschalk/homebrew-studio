@@ -305,18 +305,28 @@ export function AiRecipeAssistant() {
   return (
     <div className="space-y-6">
       {/* 1-Click Recipe Templates */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+      <section
+        aria-labelledby="ai-presets-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4"
+      >
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-[#10B981]/15 text-[#10B981]">
+          <div
+            className="p-2 rounded-xl bg-[#10B981]/15 text-[#10B981]"
+            aria-hidden="true"
+          >
             <Wand2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">
-              1-Click Specialty Sugar & Honey Recipe Generators
+            <h2
+              id="ai-presets-heading"
+              className="text-lg font-semibold text-white"
+            >
+              1-Click Specialty Sugar &amp; Honey Recipe Generators
             </h2>
-            <p className="text-xs text-slate-400">
-              Load a pre-balanced recipe showcasing different honeys, candi syrups,
-              dextrose, and unfermentable lactose directly into the Recipe Builder.
+            <p className="text-xs text-slate-300">
+              Load a pre-balanced recipe showcasing different honeys, candi
+              syrups, dextrose, and unfermentable lactose directly into the
+              Recipe Builder.
             </p>
           </div>
         </div>
@@ -331,9 +341,9 @@ export function AiRecipeAssistant() {
               Belgian Farmhouse (25B)
             </div>
             <div className="text-sm font-bold text-white">
-              Wildflower Honey & Candi Syrup Saison
+              Wildflower Honey &amp; Candi Syrup Saison
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Pilsner + Wheat base with D-90 Amber Candi Syrup (late boil), Raw
               Wildflower Honey (flameout), Saaz hops, and Belle Saison yeast.
             </p>
@@ -350,9 +360,9 @@ export function AiRecipeAssistant() {
             <div className="text-sm font-bold text-white">
               Cloudburst Citra-Mosaic-Nelson DIPA
             </div>
-            <p className="text-xs text-slate-400">
-              2-Row, Flaked Oats & White Wheat with Corn Sugar (Dextrose, 100%
-              fermentable) to boost ABV while keeping body soft and juicy.
+            <p className="text-xs text-slate-300">
+              2-Row, Flaked Oats &amp; White Wheat with Corn Sugar (Dextrose,
+              100% fermentable) to boost ABV while keeping body soft and juicy.
             </p>
           </button>
 
@@ -361,34 +371,43 @@ export function AiRecipeAssistant() {
             onClick={() => applyPresetRecipe('stout')}
             className="text-left p-4 rounded-xl bg-slate-950 hover:bg-slate-950/60 border border-slate-800 hover:border-[#3B82F6] transition-all cursor-pointer space-y-1.5"
           >
-            <div className="text-xs font-semibold text-amber-400 uppercase">
+            <div className="text-xs font-semibold text-amber-300 uppercase">
               Sweet / Milk Stout (16A)
             </div>
             <div className="text-sm font-bold text-white">
-              Buckwheat Honey & Lactose Milk Stout
+              Buckwheat Honey &amp; Lactose Milk Stout
             </div>
-            <p className="text-xs text-slate-400">
-              Maris Otter, Chocolate Malt, Lactose (0% fermentable milk sugar) for
-              creamy sweetness, and Dark Buckwheat Honey at flameout.
+            <p className="text-xs text-slate-300">
+              Maris Otter, Chocolate Malt, Lactose (0% fermentable milk sugar)
+              for creamy sweetness, and Dark Buckwheat Honey at flameout.
             </p>
           </button>
         </div>
-      </div>
+      </section>
 
       {/* Interactive Gemini AI Brewmaster Chat */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+      <section
+        aria-labelledby="ai-assistant-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4"
+      >
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]">
+            <div
+              className="p-2 rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]"
+              aria-hidden="true"
+            >
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-white">
+              <h3
+                id="ai-assistant-heading"
+                className="text-base font-semibold text-white"
+              >
                 AI Master Brewer Formulation Assistant
               </h3>
-              <p className="text-xs text-slate-400">
-                Context-aware of your active recipe (&ldquo;{recipe.name}&rdquo;) and{' '}
-                {inventory.length} inventory items.
+              <p className="text-xs text-slate-300">
+                Context-aware of your active recipe (&ldquo;{recipe.name}
+                &rdquo;) and {inventory.length} inventory items.
               </p>
             </div>
           </div>
@@ -406,7 +425,7 @@ export function AiRecipeAssistant() {
               key={suggestion}
               type="button"
               onClick={() => setPrompt(suggestion)}
-              className="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+              className="text-xs bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
             >
               {suggestion}
             </button>
@@ -415,7 +434,12 @@ export function AiRecipeAssistant() {
 
         {/* Conversation Thread */}
         {history.length > 0 && (
-          <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+          <div
+            role="log"
+            aria-live="polite"
+            aria-label="AI Brewmaster Conversation History"
+            className="space-y-3 max-h-[420px] overflow-y-auto pr-1"
+          >
             {history.map((msg, idx) => (
               <div
                 key={idx}
@@ -427,8 +451,8 @@ export function AiRecipeAssistant() {
               >
                 {msg.role === 'assistant' && msg.modelUsed && (
                   <div className="flex items-center gap-1.5 text-[11px] text-[#10B981] font-semibold mb-2">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Brewmaster Response ({msg.modelUsed})
+                    <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>Brewmaster Response ({msg.modelUsed})</span>
                   </div>
                 )}
                 {msg.text}
@@ -438,33 +462,37 @@ export function AiRecipeAssistant() {
         )}
 
         {/* Input Form */}
-        <form onSubmit={handleAsk} className="flex gap-2.5">
+        <form onSubmit={handleAsk} className="flex flex-col sm:flex-row gap-2.5">
+          <label htmlFor="ai-brewmaster-prompt" className="visually-hidden">
+            Ask the AI Brewmaster a question about your recipe
+          </label>
           <input
+            id="ai-brewmaster-prompt"
             type="text"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Ask about grain bills, honey/sugar fermentability, hop pairings, or yeast..."
-            className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#3B82F6]"
+            className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white"
           />
           <button
             type="submit"
             disabled={assistantMutation.isPending}
-            className="inline-flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 disabled:opacity-50 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-blue-600 disabled:opacity-50 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors cursor-pointer"
           >
             {assistantMutation.isPending ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Analyzing...
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                <span>Analyzing...</span>
               </>
             ) : (
               <>
-                <Send className="w-4 h-4" />
-                Ask Brewmaster
+                <Send className="w-4 h-4" aria-hidden="true" />
+                <span>Ask Brewmaster</span>
               </>
             )}
           </button>
         </form>
-      </div>
+      </section>
     </div>
   );
 }

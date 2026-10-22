@@ -84,8 +84,7 @@ export function InventoryView() {
       });
     } else {
       const cat =
-        allYeasts.find((y) => y.id === selectedCatalogId) ||
-        allYeasts[0];
+        allYeasts.find((y) => y.id === selectedCatalogId) || allYeasts[0];
       addInventoryItem({
         ingredientId: cat.id,
         name: `${cat.name} (${cat.productId})`,
@@ -153,16 +152,25 @@ export function InventoryView() {
   return (
     <div className="space-y-6">
       {/* Header & Deduct from Inventory Action */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section
+        aria-labelledby="inventory-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]">
+          <div
+            className="p-2.5 rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]"
+            aria-hidden="true"
+          >
             <Package className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">
-              Brewery Ingredient Inventory & Shopping List
+            <h2
+              id="inventory-heading"
+              className="text-lg font-semibold text-white"
+            >
+              Brewery Ingredient Inventory &amp; Shopping List
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Manage your grains, honey, sugars, hops, and yeast on hand.
             </p>
           </div>
@@ -176,23 +184,27 @@ export function InventoryView() {
           }}
           className="inline-flex items-center gap-2 bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs px-4 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
         >
-          <MinusCircle className="w-4 h-4" />
-          Deduct &ldquo;{recipe.name}&rdquo; from Inventory
+          <MinusCircle className="w-4 h-4" aria-hidden="true" />
+          <span>Deduct &ldquo;{recipe.name}&rdquo; from Inventory</span>
         </button>
-      </div>
+      </section>
 
       {deductReport && (
-        <div className="bg-slate-900 border border-[#10B981]/40 rounded-2xl p-4 space-y-2">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-slate-900 border border-[#10B981]/40 rounded-2xl p-4 space-y-2"
+        >
           <div className="text-sm font-semibold text-white">
             Inventory Deduction Summary
           </div>
           {deductReport.deducted.length > 0 && (
-            <div className="text-xs text-emerald-400">
+            <div className="text-xs text-emerald-300">
               <strong>Deducted:</strong> {deductReport.deducted.join(' • ')}
             </div>
           )}
           {deductReport.shortages.length > 0 && (
-            <div className="text-xs text-amber-400">
+            <div className="text-xs text-amber-300">
               <strong>Shortages:</strong> {deductReport.shortages.join(' • ')}
             </div>
           )}
@@ -200,20 +212,29 @@ export function InventoryView() {
       )}
 
       {/* Shopping List vs Active Recipe */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-white">
-            <ShoppingCart className="w-4 h-4 text-[#10B981]" />
-            Shopping List for &ldquo;{recipe.name}&rdquo;
-          </div>
+      <section
+        aria-labelledby="shopping-list-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3
+            id="shopping-list-heading"
+            className="flex items-center gap-2 text-sm font-semibold text-white"
+          >
+            <ShoppingCart
+              className="w-4 h-4 text-[#10B981]"
+              aria-hidden="true"
+            />
+            <span>Shopping List for &ldquo;{recipe.name}&rdquo;</span>
+          </h3>
           {shoppingList.length === 0 ? (
-            <span className="inline-flex items-center gap-1 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="inline-flex items-center gap-1 text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+              <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
               All Ingredients in Stock! Ready to Brew
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
-              <AlertTriangle className="w-3.5 h-3.5" />
+            <span className="inline-flex items-center gap-1 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+              <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
               {shoppingList.length} item(s) needed
             </span>
           )}
@@ -230,7 +251,7 @@ export function InventoryView() {
                   <div className="text-sm font-medium text-white">
                     {item.name}
                   </div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-slate-300">
                     Recipe needs {item.needed} • Have {item.onHand}
                   </div>
                 </div>
@@ -241,22 +262,30 @@ export function InventoryView() {
             ))}
           </div>
         )}
-      </div>
+      </section>
 
       {/* Add to Inventory Form */}
       <form
         onSubmit={handleAddStock}
+        aria-labelledby="add-inventory-heading"
         className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3"
       >
-        <div className="text-sm font-semibold text-white">
+        <h3
+          id="add-inventory-heading"
+          className="text-sm font-semibold text-white"
+        >
           Add Ingredient to Brewery Inventory
-        </div>
+        </h3>
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
           <div className="sm:col-span-3">
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="inv-add-type"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Ingredient Type
             </label>
             <select
+              id="inv-add-type"
               value={addType}
               onChange={(e) => {
                 const next = e.target.value as 'fermentable' | 'hop' | 'yeast';
@@ -278,10 +307,14 @@ export function InventoryView() {
           </div>
 
           <div className="sm:col-span-4">
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="inv-add-ingredient"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Select Ingredient
             </label>
             <select
+              id="inv-add-ingredient"
               value={selectedCatalogId}
               onChange={(e) => setSelectedCatalogId(e.target.value)}
               className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
@@ -308,7 +341,10 @@ export function InventoryView() {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="inv-add-quantity"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Quantity (
               {addType === 'fermentable'
                 ? unitSystem === 'metric'
@@ -322,6 +358,7 @@ export function InventoryView() {
               )
             </label>
             <input
+              id="inv-add-quantity"
               type="number"
               step="0.25"
               min="0.1"
@@ -332,10 +369,14 @@ export function InventoryView() {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="inv-add-location"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Storage Location
             </label>
             <input
+              id="inv-add-location"
               type="text"
               value={locationInput}
               onChange={(e) => setLocationInput(e.target.value)}
@@ -346,10 +387,11 @@ export function InventoryView() {
           <div className="sm:col-span-1">
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors cursor-pointer"
-              title="Add to Stock"
+              aria-label="Add Ingredient to Stock"
+              className="w-full inline-flex items-center justify-center gap-1 bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold py-2.5 px-3 rounded-lg transition-colors cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4" aria-hidden="true" />
+              <span className="sm:hidden">Add</span>
             </button>
           </div>
         </div>
@@ -358,9 +400,15 @@ export function InventoryView() {
       {/* Inventory Tables by Category */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Fermentables (Grains, Honey, Sugars) Stock */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
-          <h3 className="text-base font-semibold text-white">
-            Grains, Honey & Sugars in Stock
+        <section
+          aria-labelledby="stock-fermentables-heading"
+          className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3"
+        >
+          <h3
+            id="stock-fermentables-heading"
+            className="text-base font-semibold text-white"
+          >
+            Grains, Honey &amp; Sugars in Stock
           </h3>
           <div className="divide-y divide-slate-800/70">
             {inventory
@@ -372,14 +420,14 @@ export function InventoryView() {
                 >
                   <div>
                     <div className="text-sm font-medium text-white flex items-center gap-2">
-                      {item.name}
+                      <span>{item.name}</span>
                       {item.category && (
-                        <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                        <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-slate-800 text-slate-200">
                           {item.category}
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-300">
                       {item.location || 'Pantry / Grain Room'}
                     </div>
                   </div>
@@ -400,27 +448,33 @@ export function InventoryView() {
                       aria-label={`Stock quantity for ${item.name}`}
                       className="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white"
                     />
-                    <span className="text-xs text-slate-400 w-7">
+                    <span className="text-xs text-slate-300 w-7">
                       {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeInventoryItem(item.id)}
                       aria-label={`Delete ${item.name} from inventory`}
-                      className="p-1.5 text-slate-400 hover:text-rose-400 cursor-pointer"
+                      className="p-2 text-slate-300 hover:text-rose-400 cursor-pointer"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
               ))}
           </div>
-        </div>
+        </section>
 
         {/* Hops & Yeast Stock */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
-          <h3 className="text-base font-semibold text-white">
-            Hops & Yeast in Freezer / Fridge
+        <section
+          aria-labelledby="stock-hops-yeast-heading"
+          className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3"
+        >
+          <h3
+            id="stock-hops-yeast-heading"
+            className="text-base font-semibold text-white"
+          >
+            Hops &amp; Yeast in Freezer / Fridge
           </h3>
           <div className="divide-y divide-slate-800/70">
             {inventory
@@ -432,7 +486,7 @@ export function InventoryView() {
                 >
                   <div>
                     <div className="text-sm font-medium text-white flex items-center gap-2">
-                      {item.name}
+                      <span>{item.name}</span>
                       <span
                         className={`text-[10px] uppercase px-2 py-0.5 rounded-full ${
                           item.type === 'hop'
@@ -443,7 +497,7 @@ export function InventoryView() {
                         {item.type}
                       </span>
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-300">
                       {item.location || 'Freezer / Fridge'}
                       {item.customAlphaAcid
                         ? ` • Lot AA: ${item.customAlphaAcid}%`
@@ -472,7 +526,7 @@ export function InventoryView() {
                       aria-label={`Stock quantity for ${item.name}`}
                       className="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white"
                     />
-                    <span className="text-xs text-slate-400 w-10">
+                    <span className="text-xs text-slate-300 w-10">
                       {item.type === 'hop'
                         ? unitSystem === 'metric'
                           ? 'g'
@@ -483,15 +537,15 @@ export function InventoryView() {
                       type="button"
                       onClick={() => removeInventoryItem(item.id)}
                       aria-label={`Delete ${item.name} from inventory`}
-                      className="p-1.5 text-slate-400 hover:text-rose-400 cursor-pointer"
+                      className="p-2 text-slate-300 hover:text-rose-400 cursor-pointer"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
               ))}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

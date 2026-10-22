@@ -72,19 +72,25 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
   return (
     <div className="space-y-6">
       {/* Top Water Volumes & Strike Temperature Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section
+        aria-label="Strike Water, Sparge Water, and Mash pH Summary"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
             <span>Strike Water Volume</span>
-            <Droplets className="w-4 h-4 text-[#3B82F6]" />
+            <Droplets
+              className="w-4 h-4 text-[#3B82F6]"
+              aria-hidden="true"
+            />
           </div>
           <div className="text-2xl font-bold text-white">
             {galToDisplay(metrics.strikeWaterGal, unitSystem)}{' '}
-            <span className="text-sm font-normal text-slate-400">
+            <span className="text-sm font-normal text-slate-300">
               {unitSystem === 'metric' ? 'L' : 'gal'}
             </span>
           </div>
-          <div className="text-xs text-slate-400 mt-1">
+          <div className="text-xs text-slate-300 mt-1">
             Heat to{' '}
             <span className="text-amber-300 font-semibold">
               {tempFToDisplay(metrics.strikeWaterTempF, unitSystem)}°
@@ -95,38 +101,45 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
         </div>
 
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
             <span>Sparge Water Volume</span>
-            <Droplets className="w-4 h-4 text-cyan-400" />
+            <Droplets
+              className="w-4 h-4 text-cyan-400"
+              aria-hidden="true"
+            />
           </div>
           <div className="text-2xl font-bold text-white">
             {galToDisplay(metrics.spargeWaterGal, unitSystem)}{' '}
-            <span className="text-sm font-normal text-slate-400">
+            <span className="text-sm font-normal text-slate-300">
               {unitSystem === 'metric' ? 'L' : 'gal'}
             </span>
           </div>
-          <div className="text-xs text-slate-400 mt-1">
-            Total Brew Water: {galToDisplay(metrics.totalWaterNeededGal, unitSystem)}{' '}
+          <div className="text-xs text-slate-300 mt-1">
+            Total Brew Water:{' '}
+            {galToDisplay(metrics.totalWaterNeededGal, unitSystem)}{' '}
             {unitSystem === 'metric' ? 'L' : 'gal'}
           </div>
         </div>
 
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
             <span>Estimated Mash pH</span>
-            <Beaker className="w-4 h-4 text-[#10B981]" />
+            <Beaker
+              className="w-4 h-4 text-[#10B981]"
+              aria-hidden="true"
+            />
           </div>
           <div className="text-2xl font-bold text-white">
             {metrics.estimatedMashPh.toFixed(2)}{' '}
-            <span className="text-sm font-normal text-slate-400">pH</span>
+            <span className="text-sm font-normal text-slate-300">pH</span>
           </div>
           <div className="text-xs mt-1">
             {metrics.estimatedMashPh >= 5.2 && metrics.estimatedMashPh <= 5.6 ? (
-              <span className="text-emerald-400">
+              <span className="text-emerald-300">
                 Ideal Conversion Range (5.2–5.6)
               </span>
             ) : (
-              <span className="text-amber-400">
+              <span className="text-amber-300">
                 Outside 5.2–5.6 — Adjust Lactic Acid or Salts
               </span>
             )}
@@ -134,9 +147,12 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
         </div>
 
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
             <span>SO₄²⁻ : Cl⁻ Balance</span>
-            <Thermometer className="w-4 h-4 text-amber-400" />
+            <Thermometer
+              className="w-4 h-4 text-amber-400"
+              aria-hidden="true"
+            />
           </div>
           <div className="text-2xl font-bold text-white">
             {metrics.sulfateToChlorideRatio} : 1
@@ -145,16 +161,22 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
             {metrics.sulfateChlorideBalanceLabel}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Mash Schedule & Strike Water Parameters */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+      <section
+        aria-labelledby="mash-schedule-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div>
-            <h3 className="text-base font-semibold text-white">
-              Mash Schedule & Strike Parameters
-            </h3>
-            <p className="text-xs text-slate-400">
+            <h2
+              id="mash-schedule-heading"
+              className="text-base font-semibold text-white"
+            >
+              Mash Schedule &amp; Strike Parameters
+            </h2>
+            <p className="text-xs text-slate-300">
               Adjust mash thickness, dry grain temperature, and multi-step rests.
             </p>
           </div>
@@ -162,10 +184,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="mash-thickness-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Water-to-Grist Ratio (qt/lb)
             </label>
             <input
+              id="mash-thickness-input"
               type="number"
               step="0.1"
               min="1.0"
@@ -181,10 +207,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="mash-grain-temp-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Dry Grain Temp (°{unitSystem === 'metric' ? 'C' : 'F'})
             </label>
             <input
+              id="mash-grain-temp-input"
               type="number"
               value={tempFToDisplay(recipe.equipment.grainTempF, unitSystem)}
               onChange={(e) =>
@@ -200,10 +230,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="mash-grain-abs-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Grain Absorption (gal/lb)
             </label>
             <input
+              id="mash-grain-abs-input"
               type="number"
               step="0.01"
               min="0.05"
@@ -227,24 +261,39 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
               className="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3">
-                <span className="w-6 h-6 rounded-full bg-[#3B82F6]/20 text-[#3B82F6] text-xs font-bold flex items-center justify-center">
+                <span
+                  className="w-6 h-6 rounded-full bg-[#3B82F6]/20 text-[#3B82F6] text-xs font-bold flex items-center justify-center"
+                  aria-hidden="true"
+                >
                   {index + 1}
                 </span>
+                <label
+                  htmlFor={`mash-step-name-${step.id}`}
+                  className="visually-hidden"
+                >
+                  Mash step {index + 1} name
+                </label>
                 <input
+                  id={`mash-step-name-${step.id}`}
                   type="text"
                   value={step.name}
                   onChange={(e) =>
                     updateMashStep(step.id, { name: e.target.value })
                   }
-                  aria-label="Mash step name"
-                  className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-sm text-white font-medium"
+                  className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-white font-medium"
                 />
               </div>
 
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-slate-400">Temp:</span>
+                  <label
+                    htmlFor={`mash-step-temp-${step.id}`}
+                    className="text-xs text-slate-300"
+                  >
+                    Temp:
+                  </label>
                   <input
+                    id={`mash-step-temp-${step.id}`}
                     type="number"
                     value={tempFToDisplay(step.targetTempF, unitSystem)}
                     onChange={(e) =>
@@ -255,17 +304,22 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
                         ),
                       })
                     }
-                    aria-label="Mash step target temperature"
                     className="w-20 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white"
                   />
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-slate-300">
                     °{unitSystem === 'metric' ? 'C' : 'F'}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-slate-400">Duration:</span>
+                  <label
+                    htmlFor={`mash-step-dur-${step.id}`}
+                    className="text-xs text-slate-300"
+                  >
+                    Duration:
+                  </label>
                   <input
+                    id={`mash-step-dur-${step.id}`}
                     type="number"
                     value={step.durationMinutes}
                     onChange={(e) =>
@@ -273,10 +327,9 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
                         durationMinutes: parseInt(e.target.value, 10) || 60,
                       })
                     }
-                    aria-label="Mash step duration"
                     className="w-16 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white"
                   />
-                  <span className="text-xs text-slate-400">min</span>
+                  <span className="text-xs text-slate-300">min</span>
                 </div>
 
                 {recipe.mashSteps.length > 1 && (
@@ -284,9 +337,9 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
                     type="button"
                     onClick={() => removeMashStep(step.id)}
                     aria-label={`Remove ${step.name}`}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 cursor-pointer"
+                    className="p-2 text-slate-300 hover:text-rose-400 cursor-pointer"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-4 h-4" aria-hidden="true" />
                   </button>
                 )}
               </div>
@@ -295,69 +348,110 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
 
           <form
             onSubmit={handleAddMashStep}
-            className="flex flex-wrap items-center gap-2 pt-2"
+            className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end pt-2"
           >
-            <input
-              type="text"
-              placeholder="Step Name (e.g. Mash Out)"
-              value={newStepName}
-              onChange={(e) => setNewStepName(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white"
-            />
-            <input
-              type="number"
-              placeholder="Temp"
-              value={newStepTemp}
-              onChange={(e) => setNewStepTemp(e.target.value)}
-              className="w-20 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
-            />
-            <input
-              type="number"
-              placeholder="Mins"
-              value={newStepMins}
-              onChange={(e) => setNewStepMins(e.target.value)}
-              className="w-20 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
-            />
-            <button
-              type="submit"
-              className="inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 px-3 py-1.5 rounded-lg cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Add Rest Step
-            </button>
+            <div className="sm:col-span-5">
+              <label
+                htmlFor="new-mash-step-name"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                New Mash Rest Name
+              </label>
+              <input
+                id="new-mash-step-name"
+                type="text"
+                placeholder="e.g., Mash Out"
+                value={newStepName}
+                onChange={(e) => setNewStepName(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="new-mash-step-temp"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Temp (°{unitSystem === 'metric' ? 'C' : 'F'})
+              </label>
+              <input
+                id="new-mash-step-temp"
+                type="number"
+                value={newStepTemp}
+                onChange={(e) => setNewStepTemp(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="new-mash-step-mins"
+                className="block text-xs font-medium text-slate-300 mb-1"
+              >
+                Duration (min)
+              </label>
+              <input
+                id="new-mash-step-mins"
+                type="number"
+                value={newStepMins}
+                onChange={(e) => setNewStepMins(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+              />
+            </div>
+
+            <div className="sm:col-span-3">
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-100 px-3 py-2 rounded-lg cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>Add Rest Step</span>
+              </button>
+            </div>
           </form>
         </div>
-      </div>
+      </section>
 
       {/* Water Chemistry & Mineral Salts Calculator */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5">
+      <section
+        aria-labelledby="water-chemistry-heading"
+        className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div>
-            <h3 className="text-base font-semibold text-white">
-              Water Chemistry & Salt Additions (ppm / mg/L)
-            </h3>
-            <p className="text-xs text-slate-400">
-              Select your source water and target beer style profile, or auto-match salts.
+            <h2
+              id="water-chemistry-heading"
+              className="text-base font-semibold text-white"
+            >
+              Water Chemistry &amp; Salt Additions (ppm / mg/L)
+            </h2>
+            <p className="text-xs text-slate-300">
+              Select your source water and target beer style profile, or
+              auto-match salts.
             </p>
           </div>
 
           <button
             type="button"
             onClick={autoMatchTargetWater}
-            className="inline-flex items-center gap-1.5 bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs px-4 py-2 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-[#10B981] hover:bg-emerald-600 text-slate-950 font-semibold text-xs px-4 py-2.5 rounded-xl transition-colors cursor-pointer"
           >
-            <Wand2 className="w-4 h-4" />
-            Auto-Calculate Salts for Target Profile
+            <Wand2 className="w-4 h-4" aria-hidden="true" />
+            <span>Auto-Calculate Salts for Target Profile</span>
           </button>
         </div>
 
         {/* Source & Target Water Selectors */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="source-water-select"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Source Water Profile
             </label>
             <select
+              id="source-water-select"
               value={recipe.sourceWater.id}
               onChange={(e) => {
                 const found = WATER_PROFILES_CATALOG.find(
@@ -376,10 +470,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">
+            <label
+              htmlFor="target-water-select"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Target Style Water Profile
             </label>
             <select
+              id="target-water-select"
               value={recipe.targetWater.id}
               onChange={(e) => {
                 const found = WATER_PROFILES_CATALOG.find(
@@ -401,10 +499,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
         {/* Salt & Acid Additions Inputs */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div>
-            <label className="block text-[11px] text-slate-400 mb-1">
+            <label
+              htmlFor="salt-gypsum-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Gypsum CaSO₄ (g)
             </label>
             <input
+              id="salt-gypsum-input"
               type="number"
               step="0.5"
               min="0"
@@ -419,10 +521,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-slate-400 mb-1">
+            <label
+              htmlFor="salt-cacl2-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Calcium Chloride CaCl₂ (g)
             </label>
             <input
+              id="salt-cacl2-input"
               type="number"
               step="0.5"
               min="0"
@@ -437,10 +543,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-slate-400 mb-1">
+            <label
+              htmlFor="salt-epsom-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Epsom Salt MgSO₄ (g)
             </label>
             <input
+              id="salt-epsom-input"
               type="number"
               step="0.5"
               min="0"
@@ -455,10 +565,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-slate-400 mb-1">
+            <label
+              htmlFor="salt-bakingsoda-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Baking Soda NaHCO₃ (g)
             </label>
             <input
+              id="salt-bakingsoda-input"
               type="number"
               step="0.5"
               min="0"
@@ -473,10 +587,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-slate-400 mb-1">
+            <label
+              htmlFor="salt-chalk-input"
+              className="block text-xs font-medium text-slate-300 mb-1"
+            >
               Chalk CaCO₃ (g)
             </label>
             <input
+              id="salt-chalk-input"
               type="number"
               step="0.5"
               min="0"
@@ -491,10 +609,14 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-emerald-400 mb-1">
+            <label
+              htmlFor="salt-lactic-input"
+              className="block text-xs font-medium text-emerald-300 mb-1"
+            >
               88% Lactic Acid (mL)
             </label>
             <input
+              id="salt-lactic-input"
               type="number"
               step="0.5"
               min="0"
@@ -521,20 +643,22 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
                 key={ion.key}
                 className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-center space-y-1"
               >
-                <div className="text-xs font-semibold text-slate-400">
+                <div className="text-xs font-semibold text-slate-300">
                   {ion.label} ({ion.symbol})
                 </div>
                 <div className="text-xl font-bold text-white">
                   {resultingVal}{' '}
-                  <span className="text-xs font-normal text-slate-400">ppm</span>
+                  <span className="text-xs font-normal text-slate-300">
+                    ppm
+                  </span>
                 </div>
-                <div className="text-[11px] text-slate-400">
+                <div className="text-[11px] text-slate-300">
                   Target: {targetVal} ppm (
                   <span
                     className={
                       Math.abs(diff) <= 15
-                        ? 'text-emerald-400'
-                        : 'text-amber-400'
+                        ? 'text-emerald-300'
+                        : 'text-amber-300'
                     }
                   >
                     {diff >= 0 ? `+${diff}` : diff}
@@ -545,7 +669,7 @@ export function WaterChemistryView({ metrics }: WaterChemistryViewProps) {
             );
           })}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

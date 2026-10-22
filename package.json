@@ -1,7 +1,17 @@
 {
-  "name": "homebrew-recipe-studio",
+  "name": "homebrew-studio",
   "version": "1.0.0",
-  "private": true,
+  "description": "Open-source All-Grain, BIAB, Honey & Sugar Homebrew Recipe Formulator, Water Chemistry Workbench, Inventory Manager, and Brewer's Log.",
+  "author": "Harold Gottschalk <hgottschalk@softbrew.com> (https://github.com/hgottschalk)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hgottschalk/homebrew-studio.git"
+  },
+  "homepage": "https://github.com/hgottschalk/homebrew-studio",
+  "bugs": {
+    "url": "https://github.com/hgottschalk/homebrew-studio/issues"
+  },
   "scripts": {
     "dev": "next dev -p 3456",
     "build": "next build",

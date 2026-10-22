@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="brewGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="amberBeer" x1="120" y1="160" x2="360" y2="410" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="#020617"/>
+  <rect x="20" y="20" width="472" height="472" rx="96" stroke="url(#brewGrad)" stroke-width="16" fill="#0f172a"/>
+  <!-- Handle -->
+  <path d="M352 204H396C418.091 204 436 221.909 436 244V316C436 338.091 418.091 356 396 356H352" stroke="#94A3B8" stroke-width="26" stroke-linecap="round"/>
+  <!-- Mug Body -->
+  <rect x="132" y="164" width="220" height="236" rx="28" fill="url(#amberBeer)" stroke="#F8FAFC" stroke-width="18"/>
+  <!-- Foam Head -->
+  <path d="M126 162C126 136 148 116 174 118C186 98 214 92 238 104C258 90 290 94 306 114C334 114 358 134 358 162C358 180 342 194 322 194H162C142 194 126 180 126 162Z" fill="#FEF3C7" stroke="#F8FAFC" stroke-width="16"/>
+  <!-- Glass Highlights -->
+  <line x1="184" y1="226" x2="184" y2="352" stroke="#FEF3C7" stroke-width="14" stroke-linecap="round" stroke-opacity="0.65"/>
+  <line x1="242" y1="226" x2="242" y2="352" stroke="#FEF3C7" stroke-width="14" stroke-linecap="round" stroke-opacity="0.45"/>
+</svg>

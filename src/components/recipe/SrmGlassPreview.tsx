@@ -29,17 +29,21 @@ function RangeStatusBadge({
   format?: (val: number) => string;
 }) {
   const inRange = value >= min && value <= max;
-  const label = inRange ? 'In Style' : value < min ? 'Below Style' : 'Above Style';
+  const label = inRange
+    ? 'In Style'
+    : value < min
+      ? 'Below Style'
+      : 'Above Style';
   return (
-    <div className="flex items-center justify-between text-[11px] mt-1.5 pt-1.5 border-t border-slate-800/80">
-      <span className="text-slate-400">
+    <div className="flex items-center justify-between gap-2 text-[11px] mt-1.5 pt-1.5 border-t border-slate-800/80">
+      <span className="text-slate-300 truncate">
         BJCP: {format(min)}–{format(max)}
       </span>
       <span
-        className={`font-semibold px-1.5 py-0.5 rounded ${
+        className={`shrink-0 whitespace-nowrap font-semibold px-1.5 py-0.5 rounded ${
           inRange
-            ? 'bg-emerald-500/15 text-emerald-400'
-            : 'bg-amber-500/15 text-amber-400'
+            ? 'bg-emerald-500/15 text-emerald-300'
+            : 'bg-amber-500/15 text-amber-300'
         }`}
       >
         {label}
@@ -61,13 +65,17 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <section
+      aria-label="Live Recipe Vital Statistics and SRM Color Preview"
+      className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4"
+    >
       <div className="flex flex-col lg:flex-row items-center gap-6">
         {/* Visual Pint Glass */}
         <div className="relative flex flex-col items-center shrink-0">
           <div
+            role="img"
+            aria-label={`Beer color preview: ${metrics.srm} SRM (${metrics.ebc} EBC)`}
             className="relative w-24 h-36 rounded-b-2xl rounded-t-md border-2 border-white/25 overflow-hidden shadow-inner flex flex-col"
-            title={`Estimated Color: ${metrics.srm} SRM (${metrics.ebc} EBC)`}
           >
             {/* Foam Head */}
             <div className="h-6 w-full bg-gradient-to-b from-amber-50 via-amber-50/95 to-amber-100/90 border-b border-amber-200/50 relative z-10" />
@@ -84,11 +92,11 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
             </div>
           </div>
           <div className="mt-2 text-center">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-200">
               {metrics.srm} SRM / {metrics.ebc} EBC
             </span>
             {bjcpStyle && (
-              <div className="text-[10px] text-slate-400">
+              <div className="text-[11px] text-slate-300">
                 Target: {bjcpStyle.srmMin}–{bjcpStyle.srmMax} SRM
               </div>
             )}
@@ -100,14 +108,14 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
           {/* ABV */}
           <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
                 <span>Est. ABV</span>
-                <Flame className="w-4 h-4 text-[#10B981]" />
+                <Flame className="w-4 h-4 text-[#10B981]" aria-hidden="true" />
               </div>
               <div className="text-2xl font-bold text-white tracking-tight">
                 {metrics.abv.toFixed(1)}%
               </div>
-              <div className="text-[11px] text-slate-400 mt-1">
+              <div className="text-[11px] text-slate-300 mt-1">
                 Alt (High-Grav): {metrics.abvAlternate.toFixed(1)}%
               </div>
             </div>
@@ -124,14 +132,17 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
           {/* Original Gravity */}
           <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
                 <span>Original Gravity</span>
-                <Droplets className="w-4 h-4 text-[#3B82F6]" />
+                <Droplets
+                  className="w-4 h-4 text-[#3B82F6]"
+                  aria-hidden="true"
+                />
               </div>
               <div className="text-2xl font-bold text-white tracking-tight">
                 {metrics.og.toFixed(3)}
               </div>
-              <div className="text-[11px] text-slate-400 mt-1">
+              <div className="text-[11px] text-slate-300 mt-1">
                 {ogPlato} °P • Pre-Boil {metrics.preBoilGravity.toFixed(3)}
               </div>
             </div>
@@ -148,14 +159,14 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
           {/* Final Gravity */}
           <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
                 <span>Final Gravity</span>
-                <Scale className="w-4 h-4 text-[#10B981]" />
+                <Scale className="w-4 h-4 text-[#10B981]" aria-hidden="true" />
               </div>
               <div className="text-2xl font-bold text-white tracking-tight">
                 {metrics.fg.toFixed(3)}
               </div>
-              <div className="text-[11px] text-slate-400 mt-1">
+              <div className="text-[11px] text-slate-300 mt-1">
                 {fgPlato} °P • Apparent Atten.{' '}
                 {metrics.og > 1
                   ? Math.round(
@@ -178,16 +189,20 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
           {/* Bitterness IBU */}
           <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
                 <span>Bitterness</span>
-                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <Sparkles
+                  className="w-4 h-4 text-emerald-400"
+                  aria-hidden="true"
+                />
               </div>
               <div className="text-2xl font-bold text-white tracking-tight">
                 {metrics.ibu.toFixed(1)}{' '}
-                <span className="text-sm font-normal text-slate-400">IBU</span>
+                <span className="text-sm font-normal text-slate-300">IBU</span>
               </div>
-              <div className="text-[11px] text-slate-400 mt-1">
-                BU:GU {metrics.buGuRatio} ({getBuGuDescription(metrics.buGuRatio)})
+              <div className="text-[11px] text-slate-300 mt-1">
+                BU:GU {metrics.buGuRatio} (
+                {getBuGuDescription(metrics.buGuRatio)})
               </div>
             </div>
             {bjcpStyle && (
@@ -203,25 +218,31 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
           {/* Diastatic Power & Mash pH */}
           <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 col-span-2 sm:col-span-1 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                <span>Mash pH & Enzymes</span>
+              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
+                <span>Mash pH &amp; Enzymes</span>
                 {metrics.hasSufficientDiastaticPower ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2
+                    className="w-4 h-4 text-emerald-400"
+                    aria-hidden="true"
+                  />
                 ) : (
-                  <AlertTriangle className="w-4 h-4 text-amber-400" />
+                  <AlertTriangle
+                    className="w-4 h-4 text-amber-400"
+                    aria-hidden="true"
+                  />
                 )}
               </div>
               <div className="text-2xl font-bold text-white tracking-tight">
                 {metrics.estimatedMashPh.toFixed(2)}{' '}
-                <span className="text-sm font-normal text-slate-400">pH</span>
+                <span className="text-sm font-normal text-slate-300">pH</span>
               </div>
               <div className="text-[11px] mt-1">
                 {metrics.hasSufficientDiastaticPower ? (
-                  <span className="text-emerald-400">
+                  <span className="text-emerald-300">
                     {metrics.averageDiastaticPower} °Lintner (Self-Converting)
                   </span>
                 ) : (
-                  <span className="text-amber-400">
+                  <span className="text-amber-300">
                     Low Enzymes ({metrics.averageDiastaticPower} °L &lt; 35 °L)
                   </span>
                 )}
@@ -232,12 +253,12 @@ export function SrmGlassPreview({ metrics, bjcpStyle }: SrmGlassPreviewProps) {
                 value={metrics.srm}
                 min={bjcpStyle.srmMin}
                 max={bjcpStyle.srmMax}
-                format={(v) => `${v} SRM`}
+                format={(v) => `${v}`}
               />
             )}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
