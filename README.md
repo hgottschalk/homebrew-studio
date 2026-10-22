@@ -57,7 +57,8 @@ Configure any of these in `.env.local` or your **Vercel Project Settings → Env
 
 | Variable | Purpose | Cost |
 | :--- | :--- | :--- |
-| `BREW_STUDIO_PIN` | Sets a **Brewery PIN / Passcode** (e.g. `4829`). Protects your public Vercel URL with a lock screen and a 90-day encrypted `HttpOnly` cookie. Leave blank to disable the lock screen. | **$0** |
+| `BREW_STUDIO_PIN` | Sets a **Brewery PIN / Passcode** (e.g. `4829` or passphrase). Protects your public Vercel URL with a lock screen and a 90-day encrypted `HttpOnly` cookie. Leave blank to disable the lock screen. | **$0** |
+| `BREW_STUDIO_SECRET` | 32+ character random secret used to HMAC-sign session cookies (e.g. from `openssl rand -hex 32`). Prevents offline cookie forgery. | **$0** |
 | `GITHUB_GIST_TOKEN` | Personal Access Token (with only the `gist` scope) from [GitHub Tokens](https://github.com/settings/tokens). Automatically syncs your entire brewery state to a **secret GitHub Gist** (`homebrew-recipe-studio-state.json`). | **$0 Forever** |
 | `UPSTASH_REDIS_REST_URL` & `UPSTASH_REDIS_REST_TOKEN` | Alternative cloud sync via Upstash Redis Free Tier (10,000 requests/day free). | **$0 Free Tier** |
 | `GEMINI_API_KEY` | Enables live `gemini-3.8-flash` cloud reasoning in the **AI Brewmaster** tab (falls back to the built-in offline Brewmaster engine if omitted). | **Free Tier Available** |

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { Recipe, InventoryItem } from '@/types/brewing';
+import { AUTH_COOKIE_NAME, verifySignedSessionToken } from '@/lib/auth';
 
 interface AssistantRequestBody {
   prompt: string;
@@ -10,6 +11,18 @@ interface AssistantRequestBody {
 
 export async function POST(req: NextRequest) {
   try {
+    const configuredPin = process.env.BREW_STUDIO_PIN?.trim();
+    if (configuredPin) {
+      const cookieToken = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+      const isAuthorized = await verifySignedSessionToken(cookieToken, configuredPin);
+      if (!isAuthorized) {
+        return NextResponse.json(
+          { error: 'Unauthorized: Brewery PIN required' },
+          { status: 401 }
+        );
+      }
+    }
+
     const body = (await req.json()) as AssistantRequestBody;
     const { prompt, recipe, inventory } = body;
 

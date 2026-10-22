@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { BrewerySnapshot } from '@/store/useBrewStore';
+import { AUTH_COOKIE_NAME, verifySignedSessionToken } from '@/lib/auth';
 
 export type SyncBackendMode =
   | 'upstash-redis'
@@ -182,9 +183,21 @@ async function writeToLocalFile(snapshot: BrewerySnapshot): Promise<void> {
   );
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const configuredPin = process.env.BREW_STUDIO_PIN?.trim();
+  if (configuredPin) {
+    const cookieToken = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+    const isAuthorized = await verifySignedSessionToken(cookieToken, configuredPin);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: 'Unauthorized: Brewery PIN required' },
+        { status: 401 }
+      );
+    }
+  }
+
   const mode = detectSyncMode();
-  const pinConfigured = Boolean(process.env.BREW_STUDIO_PIN?.trim());
+  const pinConfigured = Boolean(configuredPin);
 
   try {
     let snapshot: BrewerySnapshot | null = null;
@@ -212,6 +225,18 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const configuredPin = process.env.BREW_STUDIO_PIN?.trim();
+  if (configuredPin) {
+    const cookieToken = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+    const isAuthorized = await verifySignedSessionToken(cookieToken, configuredPin);
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { error: 'Unauthorized: Brewery PIN required' },
+        { status: 401 }
+      );
+    }
+  }
+
   const mode = detectSyncMode();
   try {
     const body = (await req.json()) as { snapshot?: BrewerySnapshot };

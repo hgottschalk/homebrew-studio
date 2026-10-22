@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const AUTH_COOKIE_NAME = 'brew_studio_auth';
-
-async function computePinToken(pin: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`homebrew-studio-v1:${pin}`);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-}
+import { AUTH_COOKIE_NAME, verifySignedSessionToken } from '@/lib/auth';
 
 export async function middleware(req: NextRequest) {
   const configuredPin = process.env.BREW_STUDIO_PIN?.trim();
@@ -32,10 +23,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const expectedToken = await computePinToken(configuredPin);
   const cookieToken = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+  const isAuthorized = await verifySignedSessionToken(cookieToken, configuredPin);
 
-  if (cookieToken === expectedToken) {
+  if (isAuthorized) {
     return NextResponse.next();
   }
 

@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Beer, Lock, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 
 export default function UnlockBreweryPage() {
-  const router = useRouter();
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,8 +28,10 @@ export default function UnlockBreweryPage() {
         return;
       }
 
-      router.push('/');
-      router.refresh();
+      // Hard navigation so the new auth cookie is sent on a fresh request.
+      // (router.push + router.refresh race each other and can strand the
+      // page on "Unlocking Studio..." when / is still compiling in dev.)
+      window.location.replace('/');
     } catch {
       setError('Unable to reach server. Please check your connection.');
       setLoading(false);
