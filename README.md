@@ -46,22 +46,46 @@ When running `npm run dev` or `npm start` on your computer, the app automaticall
 
 ---
 
-## ☁️ Deploy to the Cloud for $0/Month (Vercel + Free Cloud Sync)
+## ☁️ 1-Click Free Cloud Deploy (Vercel)
 
-You can host your own private instance on **Vercel's Free Hobby Tier** and sync across your phone and laptop from anywhere (including at the local homebrew supply shop):
+You can launch your own personal studio in the cloud for **$0/month** on Vercel's free tier. It works immediately in browser storage, installs to your phone's home screen, and costs nothing.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhgottschalk%2Fhomebrew-studio)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhgottschalk%2Fhomebrew-studio&env=BREW_STUDIO_PIN&envDescription=Choose+a+4-digit+PIN+or+passphrase+to+lock+your+studio+(optional)&envLink=https%3A%2F%2Fgithub.com%2Fhgottschalk%2Fhomebrew-studio%23environment-variables&project-name=my-brew-studio&repository-name=homebrew-studio)
 
-### Optional Environment Variables (All $0)
-Configure any of these in `.env.local` or your **Vercel Project Settings → Environment Variables**:
+### 3-Minute Setup for Non-Technical Brewers
+1. **Click the Blue Button Above**: Sign in with GitHub (free).
+2. **Set an Optional PIN**: When Vercel asks for `BREW_STUDIO_PIN`, enter any 4–6 digit PIN (e.g. `1234`) or leave it blank to leave it open.
+3. **Click "Deploy"**: Vercel will build and give you a personal website link (like `https://my-brew-studio.vercel.app`).
+4. **Install on Your Phone**:
+   * Open the link in **Safari on iPhone** → tap **Share** → tap **Add to Home Screen**.
+   * Open the link in **Chrome on Android** → tap **Menu (⋮)** → tap **Install App**.
 
-| Variable | Purpose | Cost |
+That's it! Your recipes, stock inventory, and brew day logs are saved directly on your phone and computer.
+
+---
+
+### 🔄 Optional: Syncing Across Multiple Devices ($0)
+
+The app works 100% out-of-the-box using local device storage. If you want your recipes and inventory to **automatically sync between your laptop and phone**, you have two zero-cost options:
+
+1. **GitHub Secret Gist (Recommended & 100% Free Forever)**:
+   * Generate a free personal token at [github.com/settings/tokens](https://github.com/settings/tokens) with only the `gist` box checked.
+   * Add `GITHUB_GIST_TOKEN` to your Vercel Project Settings → Environment Variables.
+   * The app will automatically create and update a private backup gist on your GitHub account.
+2. **1-Click Backup Export/Restore**:
+   * If you don't want to set up tokens, click the cloud icon in the top header anytime to **Download Full Backup (.json)** and AirDrop/email it to your other device to restore.
+
+### Environment Variables Reference
+All environment variables are optional. The app gracefully falls back to secure defaults if omitted.
+
+| Variable | Description | Default |
 | :--- | :--- | :--- |
-| `BREW_STUDIO_PIN` | Sets a **Brewery PIN / Passcode** (e.g. `4829` or passphrase). Protects your public Vercel URL with a lock screen and a 90-day encrypted `HttpOnly` cookie. Leave blank to disable the lock screen. | **$0** |
-| `BREW_STUDIO_SECRET` | 32+ character random secret used to HMAC-sign session cookies (e.g. from `openssl rand -hex 32`). Prevents offline cookie forgery. | **$0** |
-| `GITHUB_GIST_TOKEN` | Personal Access Token (with only the `gist` scope) from [GitHub Tokens](https://github.com/settings/tokens). Automatically syncs your entire brewery state to a **secret GitHub Gist** (`homebrew-recipe-studio-state.json`). | **$0 Forever** |
-| `UPSTASH_REDIS_REST_URL` & `UPSTASH_REDIS_REST_TOKEN` | Alternative cloud sync via Upstash Redis Free Tier (10,000 requests/day free). | **$0 Free Tier** |
-| `GEMINI_API_KEY` | Enables live `gemini-3.8-flash` cloud reasoning in the **AI Brewmaster** tab (falls back to the built-in offline Brewmaster engine if omitted). | **Free Tier Available** |
+| `BREW_STUDIO_PIN` | 4–6 digit PIN or passphrase to protect your studio | *None (open)* |
+| `BREW_STUDIO_SECRET` | 32+ character random signing key (e.g. from `openssl rand -hex 32`) | *Auto-generated fallback* |
+| `GITHUB_GIST_TOKEN` | GitHub token (`gist` scope only) for cross-device cloud sync | *None (uses local device storage)* |
+| `UPSTASH_REDIS_REST_URL` | Alternative cloud storage via Upstash Redis REST | *None* |
+| `UPSTASH_REDIS_REST_TOKEN`| Upstash Redis REST authorization token | *None* |
+| `GEMINI_API_KEY` | Google Gemini API key for live AI Brewmaster formulation reasoning | *Uses built-in offline rule engine* |
 
 ---
 
